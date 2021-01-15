@@ -21,7 +21,6 @@ function FrontPage() {
          <h1 className="question-elements">Question of the day:</h1>
          <br/>
          <h3 className="question-elements">What is the point of life?</h3>
-         <Button className={classes.root}><RefreshOutlinedIcon></RefreshOutlinedIcon></Button>
       </div>
    );
 }
