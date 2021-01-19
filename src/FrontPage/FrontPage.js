@@ -1,28 +1,31 @@
 import "./FrontPage.css";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
+import axios from "axios";
+import { Component } from "react";
 
-const useStyles = makeStyles({
-   root: {
-      background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-      border: 0,
-      boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
-      color: "white",
-      padding: "6px 2px",
-      margin: "6px 6px"
-   },
-});
+class FrontPage extends Component {
 
-function FrontPage() {
-   const classes = useStyles();
-   return (
-      <div className="front-page">
-         <h1 className="question-elements">Question of the day:</h1>
-         <br/>
-         <h3 className="question-elements">What is the point of life?</h3>
-      </div>
-   );
+   state = {
+      questionText: '',
+      loaded: false,
+   };
+
+   componentDidMount() {
+      if (!this.state.loaded && this.state.questionText === '') {
+         axios.get(`http://localhost:8081/getQOTD`).then((res) => {
+            console.log(res.data.question)
+            this.setState({ questionText: res.data.question, loaded: true });
+         });
+      }
+   }
+   render() {
+      return (
+         <div className="front-page">
+            <h1 className="question-elements">Question of the day:</h1>
+            <br />
+            <h3 className="question-elements">{this.state.questionText}</h3>
+         </div>
+      );
+   }
 }
 
 export default FrontPage;
