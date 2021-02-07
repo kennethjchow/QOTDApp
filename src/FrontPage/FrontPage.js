@@ -1,31 +1,37 @@
-import "./FrontPage.css";
-import axios from "axios";
-import { Component } from "react";
+import React from "react";
 
-class FrontPage extends Component {
+import ReactPageScroller from 'react-page-scroller';
+import AllQuestionsPage from "../AllQuestionsPage/AllQuestionsPage";
+import QOTDPage from "../QOTDPage/QOTDPage";
 
-   state = {
-      questionText: '',
-      loaded: false,
-   };
 
-   componentDidMount() {
-      if (!this.state.loaded && this.state.questionText === '') {
-         axios.get(`http://localhost:8081/getQOTD`).then((res) => {
-            console.log(res.data.question)
-            this.setState({ questionText: res.data.question, loaded: true });
-         });
-      }
-   }
-   render() {
-      return (
-         <div className="front-page">
-            <h1 className="question-elements">Question of the day:</h1>
-            <br />
-            <h3 className="question-elements">{this.state.questionText}</h3>
-         </div>
-      );
-   }
+export default class FrontPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { currentPage: null };
+  }
+
+  handlePageChange = number => {
+    this.setState({ currentPage: number });
+  };
+
+  handleBeforePageChange = number => {
+    console.log(number);
+  };
+
+  render() {
+
+    return (
+      <React.Fragment>
+        <ReactPageScroller
+          pageOnChange={this.handlePageChange}
+          onBeforePageScroll={this.handleBeforePageChange}
+          customPageNumber={this.state.currentPage}
+        >
+          <QOTDPage />
+          <AllQuestionsPage />
+        </ReactPageScroller>
+      </React.Fragment>
+    );
+  }
 }
-
-export default FrontPage;
